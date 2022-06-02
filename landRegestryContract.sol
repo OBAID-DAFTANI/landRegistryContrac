@@ -1,9 +1,9 @@
 //SPDX-License-Identifier: GPL-3.0;
-
 pragma solidity ^0.8.7;
 
 contract LandRegistry{
-
+  
+             // ---------------- START STRUCT  ----------------- //
     struct landregistry
     {
     address Owner;
@@ -43,20 +43,13 @@ contract LandRegistry{
     }
    
 
-         ////////////////////STRUCT ENDS////////////////////////////////// 
+             // ---------------- STRUCT END ----------------- //
 
-  
 
  
-/////////////////////////////Add land inspector/////////////////////////////////////////////
 
-   function Landinspector(address _addr,string memory _name,uint _age,
-   string memory _designation) public {
-       landInspector[msg.sender] = LandInspector(_addr,_name,_age,_designation);
-   }
-   
 
-             //////////////////MAPPING START//////////////////////////////////////
+             // ----------------  MAPPING START ----------------- //
   
     mapping(uint => landregistry) public land;
     mapping(address=> BuyerDetails) public buyer;
@@ -65,14 +58,33 @@ contract LandRegistry{
     mapping (address => bool) public VerifiedSeller;
     mapping(address => bool) public VerifiedBuyer;
     mapping (uint => bool) public VerifyLand;
-    // mapping (uint => address) public GetLandOwner;
 
-   //....................................END...............................//
+             // ---------------- MAPPING END ----------------- //
+
+
+
+
+
+             // ----------------  START LAND INSPECTOR FUNCTION ----------------- //
+
+   function Landinspector(
+   address _addr,
+   string memory _name,
+   uint _age,
+   string memory _designation) public 
+   {
+       landInspector[msg.sender] = LandInspector(_addr,_name,_age,_designation);
+   }
+                // ----------------  END ----------------- //
 
      
-    //////Createe Function to Register Seller//////////
 
-    function registerSeller(uint _id,
+
+
+
+             // ----------------  SELLER REGISTER FUNCTION ----------------- //
+
+    function SellerRegister(uint _id,
     string memory _Name,
     uint _Age,
     string memory _City,
@@ -86,70 +98,76 @@ contract LandRegistry{
         _Email);
         VerifiedSeller[msg.sender] = false;
     }
-   //....................................END...............................//
+             // ----------------  END ----------------- //
   
-    /////FUNCTION TO VERIFY SELLER///////////
+
+
+
+
+             // ----------------  SELLER VERIFY FUNCTION ----------------- //
       function SellerVerified(address _addr) public {
        VerifiedSeller[_addr] = true;
            }
  
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
 
-/////////function to reject seller///////////
+
+
+
+             // ---------------- SELLER REJECT FUNCTION ----------------- //
 
            function SellerReject(address _addr) public  {
           VerifiedSeller[_addr] = false;
            }
 
+             // ----------------  END  ----------------- //
 
 
-   //....................................END...............................//
 
 
 
-      //////////////////land Register function////////////
+             // ----------------  LAND REGISTER FUNCTION ----------------- //
 
-
-      function registerLand(uint _LandId, address, string memory _Area, string memory _City, string memory _State, uint _LandPrice, uint _PropertyId) public {
+      function LandRegister(uint _LandId, address, string memory _Area, string memory _City, string memory _State, uint _LandPrice, uint _PropertyId) public {
              land[_LandId] =landregistry(msg.sender, _Area, _City, _State, _LandPrice, _PropertyId);
              VerifyLand[_LandId] = false;
              
            }
 
-
-   //....................................END...............................//
-
+             // ----------------  END  ----------------- //
 
 
-//////////////////////////////////////verify land//////////////////////////
 
 
-            function VerifyingLand(uint _LandId) public {
+             // ----------------  LAND VERIFY FUNCTION  ----------------- //
+
+            function LandVerifying(uint _LandId) public {
           VerifyLand[_LandId] = true;
            }
 
-
-   //....................................END...............................//
-
+             // ----------------  END  ----------------- //
 
 
 
-           ////////////////Reject land//////////////
 
-            function RejectLand(uint _LandId) public {
+
+             // ----------------  LAND REJECT  ----------------- //
+
+            function LandReject(uint _LandId) public {
           VerifyLand[_LandId] = false;
             }
 
 
 
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
 
 
-            ////////////////////////////update seller//////////////////////////
+
+             // ----------------  SELLER UPDATE  ----------------- //
             
-            function updateSeller(address _addr,string memory _Name,
+            function SellerUpdate(address _addr,string memory _Name,
             uint _Age,string memory _City,uint _Cnic,string memory _Email) public {
                 seller[_addr].Name=_Name;
                 seller[_addr].Age= _Age;
@@ -159,55 +177,72 @@ contract LandRegistry{
            }
           
 
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
 
-           ///////////cHECK OWNER BY LAND ID//////////////
 
-///FIRST FOR INDIVIDUAL.
+
+
+             // ----------------  CHECK OWNER BY LAND ID ----------------- //
+
+
            function getLandOwnerById(uint _id) public view returns(address) {
 
                return land[_id].Owner;
           }
 
+             // ----------------  END  ----------------- //
 
-   //....................................END...............................//
 
 
-          /////////////// PART 2 OF BUYER/////////////////////
+
+             // ----------------  PART TWO BUYER  ----------------- //
        
 
 
-          //////////////Register BUyer Function///////////////////////
 
-          function RegisterBuyer(address _key ,string memory _Name,uint _Age,string memory _City,uint _Cnic,string memory  _Email) public {
+             // ----------------  BUYER REGISTER FUNCTION  ----------------- //
+
+          function BuyerRegister(address _key ,string memory _Name,uint _Age,
+           string memory _City,uint _Cnic,string memory  _Email) public {
           buyer[_key] = BuyerDetails(_Name,_Age,_City,_Cnic,_Email);
           VerifiedBuyer[msg.sender] = false;
           }
 
 
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
 
-          /////////////VERIFY BUYER FUNCTION///////////////////////////
+
+
+
+
+             // ----------------  BUYER VERIFY FUNCTION  ----------------- //
+
        function BuyerVerified(address _addr) public {
        VerifiedBuyer[_addr] = true;
            }
 
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
-       //////Reject buyer Function///////////////////////
+
+
+
+
+
+             // ----------------  BUYER REJECT FUNCTION  ----------------- //
 
         function BuyerReject(address _addr) public {
           VerifiedBuyer[_addr] = false;
            }
 
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
+
 
 
     
 
-    ///////////////////////////////// UPDATE BUYER ///////////////////////////////  
+             // ----------------  BUYER UPDATE FUNCTION  ----------------- //
 
        function UpdateBuyer(address _addr,
        string memory _Name,
@@ -223,61 +258,73 @@ contract LandRegistry{
                  buyer[_addr].Email=_Email;
            }   
 
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
 
-////////////////////////// Getting owner by id//////////////////////////////
+
+
+
+             // ---------------- GET OWNER BU ID FUNCTION ----------------- //
 
      function GetCurrentOwner(uint _LandId) public view returns (address _addr){
        return land[_LandId].Owner;
      }
 
-
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
          
 
 
+             // -------//--------- LAST INDIVIDUAL CALL FUNCTION --------//--------- //
 
-         /////////////////////////////LAST INDIVIDUAL CALL FUNCTION//////////////////////////
-        
 
-        //////FUNCTION TO GET LAND CITY/////////////////////
+
+
+
+
+      
+             // ----------------  GET LAND CITY FUNCTION  ----------------- //
 
         function GetLandCity(uint _LandId) public view returns(string memory _City){
-            return land[_LandId].City;
+            return land[_LandId].City;   
         }
 
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
 
-        ///////////////////////FUNCTION GET LAND PRICE////////////////////////////
+
+
+             // ----------------  GET LAND PRICE FUNCTION  ----------------- //
+
         function GetLandPrice(uint _LandId) public view returns(uint _LandPrice){
             return land[_LandId].LandPrice;
         }
 
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
 
 
-        /////// FUNCTION TO GET LAND AREA///////////////////////
+
+             // ----------------  GET LAND AREA FUNCTION  ----------------- //
+
         function GetLandArea(uint _LandId) public view returns(string memory _Area){
             return land[_LandId].Area;
         }
-   //....................................END...............................//
+             // ----------------  END  ----------------- //
 
 
 
- /////////////////////////////////// BUY LAND///////////////////////////////////////////
 
 
+             // ----------------  BUY LAND FUNCTION  ----------------- //
  
       function BuyLand(uint _LandId) public payable{
         require(VerifiedBuyer[msg.sender] == true,"error in buyer");
         require(VerifyLand[_LandId] == true,"error in seller");
         payable(land[_LandId].Owner).transfer(msg.value);
         land[_LandId].Owner=msg.sender;
+           }
+          
+          // ----------------  END  ----------------- //
 
-
-          }
 }
